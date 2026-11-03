@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Little Rainbow</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    background: linear-gradient(#cdeeff, #fff5fb);
+    font-family: "Comic Sans MS", "Chalkboard SE", "Trebuchet MS", sans-serif;
+    color: #6b4a8a;
+    text-align: center;
+    padding: 1rem;
+    overflow: hidden;
+  }
+  .scene { position: relative; width: min(340px, 80vw); height: min(190px, 45vw); }
+  .rainbow {
+    position: absolute; inset: 0;
+    border-radius: 999px 999px 0 0;
+    background: radial-gradient(circle at 50% 100%,
+      transparent 0 34%,
+      #a77bff 34% 42%,
+      #5aa9ff 42% 50%,
+      #5fd68a 50% 58%,
+      #ffe45e 58% 66%,
+      #ffa94d 66% 74%,
+      #ff6b81 74% 82%,
+      transparent 82%);
+    animation: float 4s ease-in-out infinite;
+  }
+  .cloud {
+    position: absolute; bottom: -8px;
+    width: 90px; height: 40px;
+    background: #fff;
+    border-radius: 999px;
+    box-shadow: 0 4px 10px rgba(120,150,200,.25);
+  }
+  .cloud::before, .cloud::after {
+    content: ""; position: absolute; background: #fff; border-radius: 50%;
+  }
+  .cloud::before { width: 44px; height: 44px; top: -22px; left: 12px; }
+  .cloud::after  { width: 34px; height: 34px; top: -14px; left: 44px; }
+  .cloud.left  { left: -30px; }
+  .cloud.right { right: -30px; }
+  .face { position: absolute; top: 14px; left: 22px; font-size: 14px; letter-spacing: 6px; color: #6b4a8a; }
+  .face::after { content: "‿"; position: absolute; left: 6px; top: 8px; font-size: 18px; }
+  h1 { margin: 0; font-size: clamp(2rem, 8vw, 3.2rem); }
+  h1 span:nth-child(1){color:#ff6b81} h1 span:nth-child(2){color:#ffa94d}
+  h1 span:nth-child(3){color:#f2c200} h1 span:nth-child(4){color:#4cc47a}
+  h1 span:nth-child(5){color:#4a9dff} h1 span:nth-child(6){color:#a77bff}
+  p { margin: 0; font-size: 1.1rem; }
+  button {
+    border: none; border-radius: 999px; padding: .7rem 1.6rem;
+    font: inherit; font-size: 1.05rem; color: #fff; cursor: pointer;
+    background: linear-gradient(90deg, #ff6b81, #ffa94d, #5fd68a, #4a9dff, #a77bff);
+    box-shadow: 0 4px 0 rgba(107,74,138,.25);
+    transition: transform .15s;
+  }
+  button:hover { transform: translateY(-2px) scale(1.05); }
+  button:active { transform: translateY(2px); }
+  .spark { position: fixed; pointer-events: none; font-size: 1.6rem; animation: pop 1.2s ease-out forwards; }
+  @keyframes float { 50% { transform: translateY(-8px); } }
+  @keyframes pop {
+    from { opacity: 1; transform: translateY(0) scale(.6); }
+    to   { opacity: 0; transform: translateY(-120px) scale(1.4) rotate(40deg); }
+  }
+  @media (prefers-reduced-motion: reduce) { .rainbow, .spark { animation: none; } }
+</style>
+</head>
+<body>
+  <div class="scene">
+    <div class="rainbow"></div>
+    <div class="cloud left"></div>
+    <div class="cloud right"></div>
+  </div>
+  <h1><span>H</span><span>e</span><span>l</span><span>l</span><span>o</span><span>!</span></h1>
+  <p>Wishing you a bright and colorful day ✨</p>
+  <button id="btn">Make a rainbow 🌈</button>
+
+<script>
+  const symbols = ["🌈", "✨", "💖", "⭐", "☁️", "🦄"];
+  document.getElementById("btn").addEventListener("click", (e) => {
+    for (let i = 0; i < 12; i++) {
+      const s = document.createElement("div");
+      s.className = "spark";
+      s.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      s.style.left = (e.clientX + (Math.random() - .5) * 160) + "px";
+      s.style.top = (e.clientY + (Math.random() - .5) * 40) + "px";
+      s.style.animationDelay = (Math.random() * .3) + "s";
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 1700);
+    }
+  });
+</script>
+</body>
+</html>
